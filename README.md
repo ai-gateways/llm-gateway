@@ -54,8 +54,8 @@ response
 Cheap checks run first, so a rejected or cached request never reaches a provider or costs tokens.
 
 - **Authentication.** The caller presents a gateway-issued key instead of a provider key. The gateway maps it to a team, application, or user and holds the provider credentials itself.
-- **Budgets and rate limits.** Limits are counted in tokens and dollars as well as requests, because providers bill and throttle by tokens. [OpenAI's rate limits](https://developers.openai.com/api/docs/guides/rate-limits#how-do-these-rate-limits-work), for example, apply per minute to both requests and tokens, and an exceeded limit returns HTTP 429. Budgets also address [unbounded consumption](https://genai.owasp.org/llmrisk/llm102025-unbounded-consumption/), one of the OWASP Top 10 risks for LLM applications.
-- **Guardrails.** Input and output checks detect personal data, secrets, or [prompt injection](https://genai.owasp.org/llmrisk/llm01-prompt-injection/), then block, redact, or flag the request before it reaches a provider or a user.
+- **Budgets and rate limits.** Limits are counted in tokens and dollars as well as requests, because providers bill and throttle by tokens. [OpenAI's rate limits](https://developers.openai.com/api/docs/guides/rate-limits#how-do-these-rate-limits-work), for example, apply per minute to both requests and tokens, and an exceeded limit returns HTTP 429. Budgets also address [unbounded consumption](https://genai.owasp.org/llmrisk/llm102025-unbounded-consumption/#:~:text=Unbounded%20Consumption%20refers%20to%20the%20process), one of the OWASP Top 10 risks for LLM applications.
+- **Guardrails.** Input and output checks detect personal data, secrets, or [prompt injection](https://genai.owasp.org/llmrisk/llm01-prompt-injection/#:~:text=A%20Prompt%20Injection%20Vulnerability%20occurs%20when%20user%20prompts%20alter), then block, redact, or flag the request before it reaches a provider or a user.
 - **Caching.** Exact-match or semantic caching answers a repeated or similar prompt without a provider call.
 - **Routing and failover.** Rules select the provider and model by weight, cost, latency, or request attributes. On a 429, a 5xx, or a timeout, the gateway retries and then moves to the next model in the fallback chain.
 - **Observability.** Each request produces a log entry with tokens, cost, latency, and caller identity, plus metrics and traces. OpenTelemetry defines standard attribute names for this data, such as [`gen_ai.usage.input_tokens`](https://opentelemetry.io/docs/specs/semconv/registry/attributes/gen-ai/#gen-ai-usage-input-tokens) and [`gen_ai.provider.name`](https://opentelemetry.io/docs/specs/semconv/registry/attributes/gen-ai/#gen-ai-provider-name).
@@ -72,7 +72,7 @@ Most LLM gateways share a common core: a unified API across providers, central c
 | Load balancing | Spreads traffic across keys, regions, and deployments | Per-key rate limits capping throughput |
 | Budgets and rate limits | Caps tokens and spend per team, application, or key | Unattributed spend and runaway usage |
 | Caching | Returns stored responses for repeated or similar prompts | Paying more than once for the same answer |
-| Guardrails | Inspects prompts and responses against policy | [Sensitive information](https://genai.owasp.org/llmrisk/llm022025-sensitive-information-disclosure/) and unsafe output reaching providers or users |
+| Guardrails | Inspects prompts and responses against policy | [Sensitive information](https://genai.owasp.org/llmrisk/llm022025-sensitive-information-disclosure/#:~:text=Sensitive%20information%20can%20affect%20both%20the%20LLM%20and%20its%20application%20context) and unsafe output reaching providers or users |
 | Observability | Logs every request and exports metrics and traces | No record of who called which model and what it cost |
 
 ## LLM gateway vs API gateway
@@ -133,10 +133,10 @@ Several open-source LLM gateway projects can be self-hosted. The table lists fac
 
 | Project | Language | License | Traffic covered | Published overhead benchmark | Deployment |
 |---|---|---|---|---|---|
-| [Bifrost](https://github.com/maximhq/bifrost) | Go | Apache 2.0 | LLM, MCP tools, A2A agents | About 11 µs added per request at 5,000 RPS on one t3.xlarge | Self-hosted single binary via npx, Docker, or Kubernetes; in-VPC, on-premises, or air-gapped |
-| [LiteLLM](https://github.com/BerriAI/litellm) | Python, with a Rust core | MIT, except the `enterprise/` directory | LLM, MCP tools, A2A agents | 8 ms P95 latency at 1,000 RPS | Self-hosted proxy (Docker) or Python SDK |
-| [Agent Router](https://github.com/theagentrouter/agent-router) (formerly Envoy AI Gateway) | Go | Apache 2.0 | LLM, MCP tools | Not published in the repository | Kubernetes with Envoy Gateway, or a standalone CLI |
-| [Kong Gateway](https://github.com/Kong/kong) | Lua | Apache 2.0 | HTTP APIs, LLM, MCP tools | Not published in the repository | Docker, Kubernetes ingress controller, or bare metal |
+| [Bifrost](https://github.com/maximhq/bifrost#performance) | Go | Apache 2.0 | LLM, MCP tools, A2A agents | About 11 µs added per request at 5,000 RPS on one t3.xlarge | Self-hosted single binary via npx, Docker, or Kubernetes; in-VPC, on-premises, or air-gapped |
+| [LiteLLM](https://github.com/BerriAI/litellm#why-litellm) | Python, with a Rust core | MIT, except the `enterprise/` directory | LLM, MCP tools, A2A agents | 8 ms P95 latency at 1,000 RPS | Self-hosted proxy (Docker) or Python SDK |
+| [Agent Router](https://github.com/theagentrouter/agent-router#formerly-envoy-ai-gateway) (formerly Envoy AI Gateway) | Go | Apache 2.0 | LLM, MCP tools | Not published in the repository | Kubernetes with Envoy Gateway, or a standalone CLI |
+| [Kong Gateway](https://github.com/Kong/kong#getting-started-with-ai-gateway-for-llm-and-mcp) | Lua | Apache 2.0 | HTTP APIs, LLM, MCP tools | Not published in the repository | Docker, Kubernetes ingress controller, or bare metal |
 
 Details reflect each repository in October 2026; confirm current capabilities in each project's documentation before choosing.
 
@@ -144,4 +144,8 @@ Details reflect each repository in October 2026; confirm current capabilities in
 
 - [MCP gateway vs MCP proxy vs MCP server](https://github.com/ai-gateways/mcp-gateway#mcp-gateway-vs-mcp-proxy-vs-mcp-server): where tool-call governance sits relative to an LLM gateway
 - [Agent gateway vs MCP gateway vs LLM gateway](https://github.com/ai-gateways/agent-gateway#agent-gateway-vs-mcp-gateway-vs-llm-gateway): the three hops a single agent task crosses
+- [The three kinds of AI traffic](https://github.com/ai-gateways/ai-gateway#the-three-kinds-of-ai-traffic): how LLM, MCP, and agent gateways fit under one AI gateway
+- [Cost governance](https://github.com/ai-gateways/ai-governance#cost-governance): budgets, token-aware rate limits, and spend attribution
+- [Where to enforce guardrails](https://github.com/ai-gateways/ai-guardrails#where-to-enforce-guardrails): application libraries vs gateway enforcement
+- [Gateway-layer vs SDK instrumentation](https://github.com/ai-gateways/llm-observability#gateway-layer-vs-sdk-instrumentation): capturing model telemetry at the gateway
 - [AI Gateways](https://github.com/ai-gateways): all guides in this organization
