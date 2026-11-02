@@ -149,3 +149,11 @@ Details reflect each repository in October 2026; confirm current capabilities in
 - [Where to enforce guardrails](https://github.com/ai-gateways/ai-guardrails#where-to-enforce-guardrails): application libraries vs gateway enforcement
 - [Gateway-layer vs SDK instrumentation](https://github.com/ai-gateways/llm-observability#gateway-layer-vs-sdk-instrumentation): capturing model telemetry at the gateway
 - [AI Gateways](https://github.com/ai-gateways): all guides in this organization
+
+## Agent skill
+
+[`bifrost-llm-gateway`](skills/bifrost-llm-gateway/SKILL.md) is an Agent Skill that guides a coding agent to set up Bifrost as an LLM gateway with one OpenAI-compatible endpoint, fallbacks, and virtual keys with budgets and rate limits.
+
+```bash
+npx skills add ai-gateways/llm-gateway
+```
