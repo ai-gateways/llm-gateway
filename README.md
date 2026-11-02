@@ -15,6 +15,7 @@ This guide explains how an LLM gateway works, how it differs from an API gateway
 - [How to evaluate an LLM gateway](#how-to-evaluate-an-llm-gateway)
 - [Open-source LLM gateway projects](#open-source-llm-gateway-projects)
 - [Related guides](#related-guides)
+- [Agent skill](#agent-skill)
 
 ## What is an LLM gateway?
 
@@ -152,7 +153,7 @@ Details reflect each repository in October 2026; confirm current capabilities in
 
 ## Agent skill
 
-[`bifrost-llm-gateway`](skills/bifrost-llm-gateway/SKILL.md) is an Agent Skill that guides a coding agent to set up Bifrost as an LLM gateway with one OpenAI-compatible endpoint, fallbacks, and virtual keys with budgets and rate limits.
+[`llm-gateway`](skills/llm-gateway/SKILL.md) is an Agent Skill that guides a coding agent to set up Bifrost as an LLM gateway with one OpenAI-compatible endpoint, fallbacks, and virtual keys with budgets and rate limits.
 
 ```bash
 npx skills add ai-gateways/llm-gateway
