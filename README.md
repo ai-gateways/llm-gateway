@@ -149,6 +149,7 @@ Details reflect each repository in October 2026; confirm current capabilities in
 - [Cost governance](https://github.com/ai-gateways/ai-governance#cost-governance): budgets, token-aware rate limits, and spend attribution
 - [Where to enforce guardrails](https://github.com/ai-gateways/ai-guardrails#where-to-enforce-guardrails): application libraries vs gateway enforcement
 - [Gateway-layer vs SDK instrumentation](https://github.com/ai-gateways/llm-observability#gateway-layer-vs-sdk-instrumentation): capturing model telemetry at the gateway
+- [Awesome AI Gateways](https://github.com/ai-gateways/awesome-ai-gateways#ai-gateways): a curated list of open-source and commercial gateways for model traffic
 - [AI Gateways](https://github.com/ai-gateways): all guides in this organization
 
 ## Agent skill
